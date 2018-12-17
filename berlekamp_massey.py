@@ -1,8 +1,11 @@
 # -*- coding: UTF-8 -*-
-flow1 = [0, 1, 0, 1, 0, 1, 0]
-flow2 = [1,0,0,1,1,0,1,1,0,0,0,1,1,1,0,1,0,1,0,0]
+__all__ = ["simple_bm", "print_int_polynome", "int_to_bin"]
 
-def simple_bm(flow,**arg):
+flow1 = [0, 1, 0, 1, 0, 1, 0]
+flow2 = [1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0]
+
+
+def simple_bm(flow, **arg):
     n, l, fx = 0, [], []
 
     # 初始化
@@ -18,21 +21,21 @@ def simple_bm(flow,**arg):
     l(0)=l(1)=0
     fx(0)=fx(1)=1
     '''
-    for i in range(n+1):
+    for i in range(n + 1):
         l.append(0)
         fx.append(1)
-    l.append(n+1)
+    l.append(n + 1)
     m = n
-    fx.append(bin_to_int(xor(int_to_bin(fx[-1]), exponent_to_bin(n+1))))
-    
-    if arg["debug"]:
-        print_int_polynome(int_to_bin(fx[-1]),with_fx=n+1)
+    fx.append(bin_to_int(xor(int_to_bin(fx[-1]), exponent_to_bin(n + 1))))
+
+    if "debug" in arg:
+        print_int_polynome(int_to_bin(fx[-1]), with_fx=n + 1)
         print()
 
-    n+=1
-    
+    n += 1
+
     while n < len(flow):
-        d = bin_sum(xor(flow[:n+1], int_to_bin(fx[-1])[::-1],'right&'))
+        d = bin_sum(xor(flow[:n + 1], int_to_bin(fx[-1])[::-1], 'right&'))
         if d == 0:
             fx.append(fx[-1])
             l.append(l[-1])
@@ -41,17 +44,18 @@ def simple_bm(flow,**arg):
             f(n+1)(x) = fn(x)+dn dm^-1 x^(n-m) fm(x)
             '''
             fx.append(bin_to_int(xor(int_to_bin(fx[-1]), polynome_multiply(exponent_to_bin(n - m), int_to_bin(fx[m])))))
-            
-            if l[-1] >= n +1 - l[-1]:
+
+            if l[-1] >= n + 1 - l[-1]:
                 l.append(l[-1])
             else:
                 l.append(n + 1 - l[-1])
                 m = n
-            if arg["debug"]:
-                print_int_polynome(int_to_bin(fx[-1]),with_fx=n+1)
+            if "debug" in arg:
+                print_int_polynome(int_to_bin(fx[-1]), with_fx=n + 1)
                 print()
         n += 1
-    return [fx[-1],l[-1]]
+    return [fx[-1], l[-1]]
+
 
 def bin_sum(_bin):
     '''
@@ -62,6 +66,7 @@ def bin_sum(_bin):
     for i in _bin:
         out = out ^ i
     return out
+
 
 def int_to_bin(_int):
     '''
@@ -94,10 +99,10 @@ def xor(_bin1, _bin2, mode='left'):
         return [_bin1[i] ^ _bin2[i] for i in range(len(_bin2))] + _bin1[len(_bin2):]
     elif mode == 'right':
         return _bin1[:len(_bin1) - len(_bin2)] + [_bin1[len(_bin1) - len(_bin2) + i] ^ _bin2[i] for i in range(len(_bin2))]
-    elif mode=="right&":
-        return [0 for i in range(len(_bin1) - len(_bin2))]+[_bin1[len(_bin1) - len(_bin2) + i] & _bin2[i] for i in range(len(_bin2))]
-    elif mode=="left&":
-        return [_bin1[i] & _bin2[i] for i in range(len(_bin2))]+[0 for i in range(len(_bin1) - len(_bin2))]
+    elif mode == "right&":
+        return [0 for i in range(len(_bin1) - len(_bin2))] + [_bin1[len(_bin1) - len(_bin2) + i] & _bin2[i] for i in range(len(_bin2))]
+    elif mode == "left&":
+        return [_bin1[i] & _bin2[i] for i in range(len(_bin2))] + [0 for i in range(len(_bin1) - len(_bin2))]
     else:
         raise AttributeError
     # for j in range(len(_bin2))
@@ -123,15 +128,15 @@ def polynome_multiply(polynome1, polynome2):
     return out
 
 
-def print_int_polynome(_bin,**arg):
+def print_int_polynome(_bin, **arg):
     '''
     f(255) = 1 + x + x^2 + x^3 + x^4 + x^5 + x^6 + x^7
     '''
     start = False
-    if arg["with_fx"]==0:
+    if "with_fx" in arg and arg["with_fx"] == 0:
         print("f(x) =", end="")
-    else:
-        print("f"+str(arg["with_fx"])+"(x) =", end="")
+    elif "with_fx" in arg and arg["with_fx"] != 0:
+        print("f" + str(arg["with_fx"]) + "(x) =", end="")
     if _bin[0] == 1:
         print(" 1", end="")
         start = True
@@ -165,6 +170,10 @@ def test_xor():
     print(c)
 
 
+def test_bm():
+    [fx, l] = simple_bm(flow2, debug=True)
+    print_int_polynome(int_to_bin(fx), with_fx=0)
+
+
 if __name__ == "__main__":
-    [fx,l]= simple_bm(flow2,debug=True)
-    print_int_polynome(int_to_bin(fx),with_fx=0)
+    test_bm()
