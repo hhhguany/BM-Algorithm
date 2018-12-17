@@ -28,11 +28,24 @@ def simple_bm(flow, **arg):
     m = n
     fx.append(bin_to_int(xor(int_to_bin(fx[-1]), exponent_to_bin(n + 1))))
 
-    if "debug" in arg:
-        print_int_polynome(int_to_bin(fx[-1]), with_fx=n + 1)
+    if "debug" in arg and arg["debug"] == 3:
+        print("n(0) = " + str(n))
+        for i in range(n + 1):
+            print("f" + str(n) + "(x) = ", end="")
+        print("1")
+        for i in range(n + 1):
+            print("l" + str(n) + " = ", end="")
+        print(0)
+        print("n = " + str(n + 1) + "   ", end="")
         print()
 
     n += 1
+
+    if "debug" in arg and arg["debug"] in [2, 3]:
+        print("l(" + str(n) + ")=" + str(l[-1]) + "    ", end="")
+    if "debug" in arg and arg["debug"] in [1, 2, 3]:
+        print_int_polynome(int_to_bin(fx[-1]), with_fx=n)
+        print()
 
     while n < len(flow):
         d = bin_sum(xor(flow[:n + 1], int_to_bin(fx[-1])[::-1], 'right&'))
@@ -50,9 +63,18 @@ def simple_bm(flow, **arg):
             else:
                 l.append(n + 1 - l[-1])
                 m = n
-            if "debug" in arg:
+            if "debug" in arg and arg["debug"] == 1:
                 print_int_polynome(int_to_bin(fx[-1]), with_fx=n + 1)
-                print()
+        if "debug" in arg and arg["debug"] == 3:
+            print("n = " + str(n) + "   ", end="")
+            print("d(" + str(n) + ") = " + str(d) + "  ", end="")
+            print("m = " + str(m) + "  ")
+
+        if "debug" in arg and arg["debug"] in [2, 3]:
+            print("l(" + str(n) + ")=" + str(l[-1]) + "    ", end="")
+            print_int_polynome(int_to_bin(fx[-1]), with_fx=n + 1)
+            print()
+
         n += 1
     return [fx[-1], l[-1]]
 
@@ -151,6 +173,7 @@ def print_int_polynome(_bin, **arg):
             else:
                 print(" x^" + str(i + 2), end="")
                 start = True
+    print()
 
 
 def test_polynome_multiply():
