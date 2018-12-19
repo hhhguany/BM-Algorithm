@@ -3,7 +3,7 @@ Berlekamp-Massey 算法的 Python 3 实现。
 
 ## 使用
 ```
-$ python mian.py -h
+$ python main.py -h
 usage: mian.py [-h] [-d {1,2,3}] [-l {ch,en}] [-v VERSION] flow
 ```
 
@@ -16,7 +16,7 @@ $ python main.py 10011011000111010100
 ```
 ### 调试等级 1
 ```
-$ python mian.py -d 1 10011011000111010100
+$ python main.py -d 1 10011011000111010100
 f1(x) = 1 + x
 f2(x) = 1
 f4(x) = 1 + x^3
@@ -38,7 +38,7 @@ f20(x) = 1 + x^3 + x^9 + x^11
 
 ### 调试等级 2
 ```
-$ python -u mian.py -d 2 10011011000111010100
+$ python -u main.py -d 2 10011011000111010100
 l(1)=1    f1(x) = 1 + x
 l(1)=1    f2(x) = 1
 l(2)=1    f3(x) = 1
@@ -64,7 +64,7 @@ l(19)=11    f20(x) = 1 + x^3 + x^9 + x^11
 ### 调试等级 3
 本格式用于本人提交作业的。
 ```
-$ python mian.py -d 3 10011011000111010100
+$ python main.py -d 3 10011011000111010100
 n(0) = 0
 f0(x) = 1
 l0 = 0
