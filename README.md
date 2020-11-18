@@ -4,7 +4,7 @@ Berlekamp-Massey 算法的 Python 3 实现。
 ## 使用
 ```
 $ python main.py -h
-usage: mian.py [-h] [-d {1,2,3}] [-l {ch,en}] [-v VERSION] flow
+usage: main.py [-h] [-d {1,2,3}] [-l {ch,en}] [-v VERSION] flow
 ```
 
 ### 普通模式
